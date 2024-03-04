@@ -7,6 +7,7 @@
 //  specific language governing permissions and limitations under the License.
 //
 
+import Foundation
 import ios_voice_processor
 
 /// High-level iOS binding for Porcupine wake word engine. It handles recording audio from microphone,
