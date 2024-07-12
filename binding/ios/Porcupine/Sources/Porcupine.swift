@@ -16,11 +16,11 @@ public class Porcupine {
         let myBundle = Bundle(for: Porcupine.self)
 
         guard let resourceBundleURL = myBundle.url(
-             forResource: "PorcupineResources", withExtension: "bundle")
+            forResource: "PorcupineResources", withExtension: "bundle")
         else { fatalError("PorcupineResources.bundle not found") }
 
         guard let resourceBundle = Bundle(url: resourceBundleURL)
-            else { fatalError("Could not open PorcupineResources.bundle") }
+        else { fatalError("Could not open PorcupineResources.bundle") }
 
         return resourceBundle
     }()
@@ -84,7 +84,7 @@ public class Porcupine {
 
         if sensitivitiesArg.count != keywordPaths.count {
             throw PorcupineInvalidArgumentError("Number of sensitivity values (\(sensitivitiesArg.count)) " +
-                "does not match number of keywords (\(keywordPaths.count))")
+                                                "does not match number of keywords (\(keywordPaths.count))")
         }
 
         if !sensitivitiesArg.allSatisfy({$0 >= 0 && $0 <= 1}) {
@@ -128,13 +128,13 @@ public class Porcupine {
     /// - Throws: PorcupineError
     public convenience init(
         accessKey: String,
-        keywordPath: String,
+        keywordPaths: [String],
         modelPath: String? = nil,
         sensitivity: Float32 = 0.5
     ) throws {
         try self.init(
             accessKey: accessKey,
-            keywordPaths: [keywordPath],
+            keywordPaths: keywordPaths,
             modelPath: modelPath,
             sensitivities: [sensitivity])
     }
@@ -184,11 +184,11 @@ public class Porcupine {
     /// - Throws: PorcupineError
     public convenience init(
         accessKey: String,
-        keyword: Porcupine.BuiltInKeyword,
+        keywords: [Porcupine.BuiltInKeyword],
         modelPath: String? = nil,
         sensitivity: Float32 = 0.5
     ) throws {
-        try self.init(accessKey: accessKey, keywords: [keyword], modelPath: modelPath, sensitivities: [sensitivity])
+        try self.init(accessKey: accessKey, keywords: keywords, modelPath: modelPath, sensitivities: [sensitivity])
     }
 
     deinit {
@@ -216,7 +216,7 @@ public class Porcupine {
 
         if pcm.count != Porcupine.frameLength {
             throw PorcupineInvalidArgumentError("Frame of audio data must contain \(Porcupine.frameLength) " +
-                "samples - given frame contained \(pcm.count)")
+                                                "samples - given frame contained \(pcm.count)")
         }
 
         var result: Int32 = -1
@@ -242,41 +242,41 @@ public class Porcupine {
         }
 
         throw PorcupineIOError("Could not find file at path '\(filePath)'. " +
-            "If this is a packaged asset, ensure you have added it to your xcode project.")
+                               "If this is a packaged asset, ensure you have added it to your xcode project.")
     }
 
     private func pvStatusToPorcupineError(
         _ status: pv_status_t,
         _ message: String,
         _ messageStack: [String] = []) -> PorcupineError {
-        switch status {
-        case PV_STATUS_OUT_OF_MEMORY:
-            return PorcupineMemoryError(message, messageStack)
-        case PV_STATUS_IO_ERROR:
-            return PorcupineIOError(message, messageStack)
-        case PV_STATUS_INVALID_ARGUMENT:
-            return PorcupineInvalidArgumentError(message, messageStack)
-        case PV_STATUS_STOP_ITERATION:
-            return PorcupineStopIterationError(message, messageStack)
-        case PV_STATUS_KEY_ERROR:
-            return PorcupineKeyError(message, messageStack)
-        case PV_STATUS_INVALID_STATE:
-            return PorcupineInvalidStateError(message, messageStack)
-        case PV_STATUS_RUNTIME_ERROR:
-            return PorcupineRuntimeError(message, messageStack)
-        case PV_STATUS_ACTIVATION_ERROR:
-            return PorcupineActivationError(message, messageStack)
-        case PV_STATUS_ACTIVATION_LIMIT_REACHED:
-            return PorcupineActivationLimitError(message, messageStack)
-        case PV_STATUS_ACTIVATION_THROTTLED:
-            return PorcupineActivationThrottledError(message, messageStack)
-        case PV_STATUS_ACTIVATION_REFUSED:
-            return PorcupineActivationRefusedError(message, messageStack)
-        default:
-            let pvStatusString = String(cString: pv_status_to_string(status))
-            return PorcupineError("\(pvStatusString): \(message)", messageStack)
+            switch status {
+            case PV_STATUS_OUT_OF_MEMORY:
+                return PorcupineMemoryError(message, messageStack)
+            case PV_STATUS_IO_ERROR:
+                return PorcupineIOError(message, messageStack)
+            case PV_STATUS_INVALID_ARGUMENT:
+                return PorcupineInvalidArgumentError(message, messageStack)
+            case PV_STATUS_STOP_ITERATION:
+                return PorcupineStopIterationError(message, messageStack)
+            case PV_STATUS_KEY_ERROR:
+                return PorcupineKeyError(message, messageStack)
+            case PV_STATUS_INVALID_STATE:
+                return PorcupineInvalidStateError(message, messageStack)
+            case PV_STATUS_RUNTIME_ERROR:
+                return PorcupineRuntimeError(message, messageStack)
+            case PV_STATUS_ACTIVATION_ERROR:
+                return PorcupineActivationError(message, messageStack)
+            case PV_STATUS_ACTIVATION_LIMIT_REACHED:
+                return PorcupineActivationLimitError(message, messageStack)
+            case PV_STATUS_ACTIVATION_THROTTLED:
+                return PorcupineActivationThrottledError(message, messageStack)
+            case PV_STATUS_ACTIVATION_REFUSED:
+                return PorcupineActivationRefusedError(message, messageStack)
+            default:
+                let pvStatusString = String(cString: pv_status_to_string(status))
+                return PorcupineError("\(pvStatusString): \(message)", messageStack)
+            }
         }
-    }
 
     private func getMessageStack() throws -> [String] {
         var messageStackRef: UnsafeMutablePointer<UnsafeMutablePointer<Int8>?>?

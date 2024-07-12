@@ -70,23 +70,23 @@ public class PorcupineManager {
     ///   If missing, error will be printed to console.
     /// - Throws: PorcupineError
     public convenience init(
-            accessKey: String,
-            keywordPaths: [String],
-            modelPath: String? = nil,
-            sensitivities: [Float32]? = nil,
-            onDetection: ((Int32) -> Void)?,
-            errorCallback: ((Error) -> Void)? = nil) throws {
+        accessKey: String,
+        keywordPaths: [String],
+        modelPath: String? = nil,
+        sensitivities: [Float32]? = nil,
+        onDetection: ((Int32) -> Void)?,
+        errorCallback: ((Error) -> Void)? = nil) throws {
 
-        try self.init(
+            try self.init(
                 porcupine: Porcupine(
-                        accessKey: accessKey,
-                        keywordPaths: keywordPaths,
-                        modelPath: modelPath,
-                        sensitivities: sensitivities
+                    accessKey: accessKey,
+                    keywordPaths: keywordPaths,
+                    modelPath: modelPath,
+                    sensitivities: sensitivities
                 ),
                 onDetection: onDetection,
                 errorCallback: errorCallback)
-    }
+        }
 
     /// Constructor.
     ///
@@ -101,23 +101,23 @@ public class PorcupineManager {
     ///   If missing, error will be printed to console.
     /// - Throws: PorcupineError
     public convenience init(
-            accessKey: String,
-            keywordPath: String,
-            modelPath: String? = nil,
-            sensitivity: Float32 = 0.5,
-            onDetection: ((Int32) -> Void)?,
-            errorCallback: ((Error) -> Void)? = nil) throws {
+        accessKey: String,
+        keywordPaths: [String],
+        modelPath: String? = nil,
+        sensitivities: [Float32] = [0.5],
+        onDetection: ((Int32) -> Void)?,
+        errorCallback: ((Error) -> Void)? = nil) throws {
 
-        try self.init(
+            try self.init(
                 porcupine: Porcupine(
-                        accessKey: accessKey,
-                        keywordPath: keywordPath,
-                        modelPath: modelPath,
-                        sensitivity: sensitivity
+                    accessKey: accessKey,
+                    keywordPaths: keywordPaths,
+                    modelPath: modelPath,
+                    sensitivities: sensitivities
                 ),
                 onDetection: onDetection,
                 errorCallback: errorCallback)
-    }
+        }
 
     /// Constructor.
     ///
@@ -132,23 +132,23 @@ public class PorcupineManager {
     ///   If missing, error will be printed to console.
     /// - Throws: PorcupineError
     public convenience init(
-            accessKey: String,
-            keywords: [Porcupine.BuiltInKeyword],
-            modelPath: String? = nil,
-            sensitivities: [Float32]? = nil,
-            onDetection: ((Int32) -> Void)?,
-            errorCallback: ((Error) -> Void)? = nil) throws {
+        accessKey: String,
+        keywords: [Porcupine.BuiltInKeyword],
+        modelPath: String? = nil,
+        sensitivities: [Float32]? = nil,
+        onDetection: ((Int32) -> Void)?,
+        errorCallback: ((Error) -> Void)? = nil) throws {
 
-        try self.init(
+            try self.init(
                 porcupine: Porcupine(
-                        accessKey: accessKey,
-                        keywords: keywords,
-                        modelPath: modelPath,
-                        sensitivities: sensitivities
+                    accessKey: accessKey,
+                    keywords: keywords,
+                    modelPath: modelPath,
+                    sensitivities: sensitivities
                 ),
                 onDetection: onDetection,
                 errorCallback: errorCallback)
-    }
+        }
 
     /// Constructor.
     ///
@@ -163,22 +163,22 @@ public class PorcupineManager {
     ///   If missing, error will be printed to console.
     /// - Throws: PorcupineError
     public convenience init(
-            accessKey: String,
-            keyword: Porcupine.BuiltInKeyword,
-            modelPath: String? = nil,
-            sensitivity: Float32 = 0.5,
-            onDetection: ((Int32) -> Void)?,
-            errorCallback: ((Error) -> Void)? = nil) throws {
-        try self.init(
+        accessKey: String,
+        keywords: [Porcupine.BuiltInKeyword],
+        modelPath: String? = nil,
+        sensitivity: Float32 = 0.5,
+        onDetection: ((Int32) -> Void)?,
+        errorCallback: ((Error) -> Void)? = nil) throws {
+            try self.init(
                 porcupine: Porcupine(
-                        accessKey: accessKey,
-                        keyword: keyword,
-                        modelPath: modelPath,
-                        sensitivity: sensitivity
+                    accessKey: accessKey,
+                    keywords: keywords,
+                    modelPath: modelPath,
+                    sensitivity: sensitivity
                 ),
                 onDetection: onDetection,
                 errorCallback: errorCallback)
-    }
+        }
 
     deinit {
         if self.porcupine != nil {
@@ -218,8 +218,8 @@ public class PorcupineManager {
 
         do {
             try VoiceProcessor.instance.start(
-                    frameLength: Porcupine.frameLength,
-                    sampleRate: Porcupine.sampleRate
+                frameLength: Porcupine.frameLength,
+                sampleRate: Porcupine.sampleRate
             )
         } catch {
             throw PorcupineError(error.localizedDescription)
