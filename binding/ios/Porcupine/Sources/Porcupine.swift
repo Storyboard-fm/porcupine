@@ -47,6 +47,7 @@ public class Porcupine {
     public static let sampleRate = UInt32(pv_sample_rate())
     public static let version = String(cString: pv_porcupine_version())
     private static var sdk = "ios"
+    public var wakeWordSensitivity: Double = 0.5
 
     public static func setSdk(sdk: String) {
         self.sdk = sdk
@@ -81,6 +82,7 @@ public class Porcupine {
         }
 
         let sensitivitiesArg = sensitivities ?? Array(repeating: 0.5, count: keywordPaths.count)
+        wakeWordSensitivity = Double(sensitivitiesArg.first ?? 0.5)
 
         if sensitivitiesArg.count != keywordPaths.count {
             throw PorcupineInvalidArgumentError("Number of sensitivity values (\(sensitivitiesArg.count)) " +
